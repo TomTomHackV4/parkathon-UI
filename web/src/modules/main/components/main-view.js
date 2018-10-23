@@ -1,15 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import './main-view.css';
 import { connect } from 'react-redux'
 import { getMapPoints } from '../../../common'
+import { MapView } from '../../map'
 
 class MainView extends Component {
     render() {
         console.log('Props: ', this.props)
         return (
             <div className="App">
-                <h1>Hello World!</h1>
-                <button onClick={this.props.chargeMapPoints}>Click me please!</button>
+                <div className="app-header">
+                    <h1>Parkathon App</h1>
+                </div>
+                <div className="map">
+                    <MapView />
+                </div>
             </div>
         )
     }
