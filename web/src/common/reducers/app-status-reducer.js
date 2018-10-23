@@ -3,8 +3,7 @@ import { ACTION_PARKED, ACTION_NOT_PARKED, ACTION_SELECT_DESTINATION, ACTION_NAV
 const DEFAULT_STATE = {
     userState: 'not-parked',
     previousState: null,
-    destinationMarker: null,
-    route: null
+    destinationMarker: null
 }
 
 const appStatusReducer = (state = DEFAULT_STATE, action) => {
@@ -17,7 +16,6 @@ const appStatusReducer = (state = DEFAULT_STATE, action) => {
             return {
                 ...state,
                 destinationMarker: action.destinationMarker,
-                route: action.route,
                 userState: 'markerSelected'
             }
         case ACTION_NAVIGATE:

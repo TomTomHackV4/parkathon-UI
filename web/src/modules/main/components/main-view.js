@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import './main-view.css';
 import { connect } from 'react-redux'
-import { getMapPoints, getSpotsActions, actionParked, actionNotParked, actionNavigate, actionCancel } from '../../../common'
+import { getMapPoints, getSpotsActions, actionParked, actionNotParked, actionSelectDestination, actionNavigate, actionCancel } from '../../../common'
 import { MapView } from '../../map'
 
 const BUTTON_IDS = {
@@ -34,7 +34,11 @@ class MainView extends Component {
                     <button onClick={() => onClickButtonState(BUTTON_IDS.CANCEL)}>Cancel</button>
                 </div>
                 <div className="map">
-                    <MapView freeParkingSpots={this.props.mapPoints}/>
+                    <MapView
+                        destinationMarker = {this.props.appStatus.destinationMarker}
+                        freeParkingSpots={this.props.mapPoints}
+                        onMarkerClicked={(destinationMarker) => onClickButtonState(BUTTON_IDS.MARKER_SELECTED, destinationMarker)}
+                    />
                 </div>
             </div>
         )
@@ -44,7 +48,7 @@ class MainView extends Component {
 const mapDispatchToProps = (dispatch) => {
     return {
         chargeMapPoints: () => getSpotsActions.fetch().then((data) => dispatch(getMapPoints(data))),
-        onClickButtonState: (clickedButtonId) => {
+        onClickButtonState: (clickedButtonId, destinationMarker) => {
             switch (clickedButtonId) {
                 case BUTTON_IDS.I_AM_PARKED:
                     dispatch(actionParked())
@@ -52,6 +56,10 @@ const mapDispatchToProps = (dispatch) => {
                     break
                 case BUTTON_IDS.I_AM_NOT_PARKED:
                     dispatch(actionNotParked())
+                    // TODO Notify Backend here
+                    break
+                case BUTTON_IDS.MARKER_SELECTED:
+                    dispatch(actionSelectDestination(destinationMarker))
                     // TODO Notify Backend here
                     break
                 case BUTTON_IDS.NAVIGATE:
