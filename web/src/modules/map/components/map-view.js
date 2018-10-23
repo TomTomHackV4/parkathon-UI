@@ -85,10 +85,12 @@ class MapView extends Component {
         this.map.on('locationfound', (evt) => {
             window.tomtom.L.marker(evt.latlng, {
                 title:'Your position',
-                icon: window.tomtom.L.icon({
-                    iconUrl:'user.png',
-                    iconSize:[32,32]
-                })
+                //icon: window.tomtom.L.icon({
+                //    iconUrl:'icon.png',
+                //   iconSize:[32,32]
+                //})
+                icon:new window.tomtom.L.Icon.Default()
+
             }).addTo(this.map)
             this.drawRoute(evt.latlng, this.destination)
         }, this)
