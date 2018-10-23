@@ -38,7 +38,9 @@ class MainView extends Component {
                 <div className="map">
                     <MapView destinationMarker = {this.props.appStatus.destinationMarker}
                         freeParkingSpots={this.props.mapPoints}
-                        onMarkerClicked={(destinationMarker) => this.props.onClickButtonState(BUTTON_IDS.MARKER_SELECTED, destinationMarker)} />
+                        onMarkerClicked={(destinationMarker) => {
+                            this.props.onClickButtonState(BUTTON_IDS.MARKER_SELECTED, destinationMarker)
+                        }} />
                 </div>
             </div>
         )
@@ -50,7 +52,8 @@ class MainView extends Component {
 
         // Decide whether the buttons must be disabled or not
         const disableParkedButton = (
-            userState === USER_STATUS_PARKED
+            userState === USER_STATUS_PARKED ||
+            userState === USER_STATUS_MARKER_SELECTED
         )
         const disableNotParkedButton = (
             userState === USER_STATUS_NOT_PARKED ||
@@ -58,6 +61,7 @@ class MainView extends Component {
             userState === USER_STATUS_MARKER_SELECTED
         )
         const disableNavigateButton = (
+            userState === USER_STATUS_NAVIGATE ||
             userState === USER_STATUS_NOT_PARKED ||
             userState === USER_STATUS_PARKED
         )
