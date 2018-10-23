@@ -6,6 +6,7 @@ import * as serviceWorker from './serviceWorker';
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import reducers from './common/reducers'
+import 'normalize.css'
 
 const store = createStore(reducers)
 

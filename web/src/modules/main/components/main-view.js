@@ -37,14 +37,7 @@ class MainView extends Component {
     render() {
         return (
             <div className="App">
-                <div className="app-header">
-                    <h1>
-                        Parkathon App
-                    </h1>
-                </div>
-
                 {this.renderButtons()}
-
                 <div className="map">
                     <MapView freeParkingSpots={this.props.mapPoints}/>
                 </div>
@@ -55,7 +48,6 @@ class MainView extends Component {
     renderButtons () {
         const { onClickButtonState, appStatus } = this.props
         const { userState } = appStatus
-        console.log('renderButtons', appStatus)
 
         // Decide whether the buttons must be disabled or not
         const disableParkedButton = (
@@ -76,23 +68,25 @@ class MainView extends Component {
         )
 
         return (
-            <div id='button-wrapper'>
-                <button disabled={disableParkedButton}
-                    onClick={() => onClickButtonState(BUTTON_IDS.I_AM_PARKED)}>
-                    I am parked
-                </button>
-                <button disabled={disableNotParkedButton}
-                    onClick={() => onClickButtonState(BUTTON_IDS.I_AM_NOT_PARKED)}>
-                    I am not parked
-                </button>
-                <button disabled={disableNavigateButton}
-                    onClick={() => onClickButtonState(BUTTON_IDS.NAVIGATE)}>
-                    Navigate
-                </button>
-                <button disabled={disableCancelButton}
-                    onClick={() => onClickButtonState(BUTTON_IDS.CANCEL)}>
-                    Cancel
-                </button>
+            <div className='button-wrapper'>
+                <div className='button-container'>
+                    <button disabled={disableParkedButton}
+                        onClick={() => onClickButtonState(BUTTON_IDS.I_AM_PARKED)}>
+                        I am parked
+                    </button>
+                    <button disabled={disableNotParkedButton}
+                        onClick={() => onClickButtonState(BUTTON_IDS.I_AM_NOT_PARKED)}>
+                        I am not parked
+                    </button>
+                    <button disabled={disableNavigateButton}
+                        onClick={() => onClickButtonState(BUTTON_IDS.NAVIGATE)}>
+                        Navigate
+                    </button>
+                    <button disabled={disableCancelButton}
+                        onClick={() => onClickButtonState(BUTTON_IDS.CANCEL)}>
+                        Cancel
+                    </button>
+                </div>
             </div>
         )
     }
@@ -118,7 +112,7 @@ const mapDispatchToProps = (dispatch) => {
                     dispatch(actionCancel())
                     break
                 default:
-                    console.log('Unexpected button clicked: ' + clickedButtonId)
+                    console.error('Unexpected button clicked')
             }
         }
     }

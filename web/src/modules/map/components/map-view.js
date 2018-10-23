@@ -69,7 +69,7 @@ class MapView extends Component {
         // Define TT Map
         this.map = window.tomtom.L.map('map', {
             source: 'vector',
-            key: 'FGnnvNpBGVusBxLf12fGiSd88coPe37Y',
+            key: 'sgqShnAhoEUi2DZq1UGH6GxzNU1IAqHG',
             center: [52.525244, 13.332137],
             basePath: '/sdk',
             zoom: 15,
