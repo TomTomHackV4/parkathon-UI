@@ -20,7 +20,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         chargeMapPoints: () => {
             console.log('Map points changed')
-            debugger
             dispatch(getMapPoints())
         }
     }
