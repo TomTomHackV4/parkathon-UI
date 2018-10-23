@@ -5,6 +5,7 @@ class MapView extends Component {
     constructor(props) {
         super(props)
         this.onLoadMap = this.onLoadMap.bind(this)
+        this.drawRoute = this.drawRoute.bind(this)
 
         this.map = null
     }
@@ -19,25 +20,24 @@ class MapView extends Component {
     }
 
     drawRoute(start, finish){
-      var that = this
-      var routeBackgroundWeight = 12;
-      var routeWeight = 9;
+      const routeBackgroundWeight = 12;
+      const routeWeight = 9;
 
-      window.tomtom.routing().locations([start, finish]).go().then(function (routeJson) {
-        var route = [];
+      window.tomtom.routing().locations([start, finish]).go().then((routeJson) => {
+        const route = [];
         route[0] = window.tomtom.L.geoJson(routeJson, {
           style: {
             color: 'black',
             weight: routeBackgroundWeight
           }
-        }).addTo(that.map);
+        }).addTo(this.map);
         route[1] = window.tomtom.L.geoJson(routeJson, {
           style: {
             color: 'green',
             weight: routeWeight
           }
-        }).addTo(that.map);
-      });
+        }).addTo(this.map)
+      })
     }
 
     render() {
@@ -56,10 +56,13 @@ class MapView extends Component {
 
         this.map.locate({setView: true, maxZoom: 15})
         this.map.on('locationfound', (evt) => {
+            const locations =  [ [52.525244, 13.332137], [52.535244, 13.332137]]
+            this.drawRoute([evt.latitude, evt.longitude], locations[1])
+
             window.tomtom.L.marker(evt.latlng, {
                 title:'Your position',
                 icon: window.tomtom.L.icon({
-                    iconUrl:'icon.png',
+                    iconUrl:'user.png',
                     iconSize:[32,32]
                 })
             }).addTo(this.map)
@@ -82,12 +85,6 @@ class MapView extends Component {
             console.log('Latitude, longitude', [latitude, longitude])
             window.tomtom.L.marker([latitude, longitude], { icon: myIcon }).addTo(this.map)
         })
-
-        // const locations =  [ [52.525244, 13.332137], [52.535244, 13.332137]]
-        // const currentMap = this.map
-
-        // this.drawRoute(locations[0], locations[1], currentMap)
-
     }
 
     createMap() {

@@ -1,2 +1,2 @@
-export * from './actions/map-actions'
+export * from './actions'
 export * from './http-helper'
