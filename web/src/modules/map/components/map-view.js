@@ -79,8 +79,6 @@ class MapView extends Component {
             markerZoomAnimation: false
         })
 
-        //this.map.setMinZoom(15)
-
         this.map.locate({setView: true, maxZoom: 15})
         
         this.map.on('locationfound', (evt) => {
