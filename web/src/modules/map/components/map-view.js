@@ -8,7 +8,7 @@ class MapView extends Component {
         this.updateMap = this.updateMap.bind(this)
 
         this.map = null
-        this.navigate = true
+        this.navigate = false
         this.routeCordinates = null
         this.destination = [52.535244, 13.332137]
         this.routeOnMapView = null
@@ -79,17 +79,19 @@ class MapView extends Component {
             markerZoomAnimation: false
         })
 
-        this.map.setMinZoom(15)
+        //this.map.setMinZoom(15)
 
         this.map.locate({setView: true, maxZoom: 15})
         
         this.map.on('locationfound', (evt) => {
             window.tomtom.L.marker(evt.latlng, {
                 title:'Your position',
-                icon: window.tomtom.L.icon({
-                    iconUrl:'icon.png',
-                    iconSize:[32,32]
-                })
+                //icon: window.tomtom.L.icon({
+                //    iconUrl:'icon.png',
+                //   iconSize:[32,32]
+                //})
+                icon:new window.tomtom.L.Icon.Default()
+
             }).addTo(this.map)
             this.drawRoute(evt.latlng, this.destination)
         }, this)
