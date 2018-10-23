@@ -1,10 +1,9 @@
-import { GET_MAP_POINTS_ACTION_NAME } from '../actions'
+import { GET_PARKING_SPOTS_RESOURCE_NAME } from '../actions'
 const DEFAULT_STATE = []
 
 const mapReducer = (state = DEFAULT_STATE, action) => {
     switch (action.type) {
-        case GET_MAP_POINTS_ACTION_NAME:
-            console.log('get map points!')
+        case GET_PARKING_SPOTS_RESOURCE_NAME:
             return action.data
         default:
             return state
