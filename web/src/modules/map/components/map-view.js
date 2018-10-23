@@ -8,6 +8,8 @@ class MapView extends Component {
     constructor(props) {
       super(props)
       this.onLoadMap = this.onLoadMap.bind(this)
+      this.onClickPopup = this.onClickPopup.bind(this)
+
       this.map = null;
     }
 
@@ -19,6 +21,30 @@ class MapView extends Component {
          script.onload = this.onLoadMap
     }
 
+    onClickPopup(){
+      console.log("Clicked")
+    }
+
+    drawRoute(start, finish, currentMap){
+      var routeBackgroundWeight = 12;
+      var routeWeight = 9;
+          
+      window.tomtom.routing().locations([start, finish]).go().then(function (routeJson) {
+        var route = [];
+        route[0] = window.tomtom.L.geoJson(routeJson, {
+          style: {
+            color: 'black',
+            weight: routeBackgroundWeight
+          }
+        }).addTo(currentMap);
+        route[1] = window.tomtom.L.geoJson(routeJson, {
+          style: {
+            color: 'green',
+            weight: routeWeight
+          }
+        }).addTo(currentMap);
+      });
+    }   
 
        render() {
          return <div id = 'map'></div>
@@ -42,10 +68,21 @@ class MapView extends Component {
            
           this.props.freeParkingSpots.forEach(({latitude, longitude}) => {
             var marker = window.tomtom.L.marker([latitude, longitude], {icon: myIcon}).addTo(this.map);
-            marker.bindPopup(ReactDOMServer.renderToString(<ParkingPopup />))
+            marker.bindPopup(ReactDOMServer.renderToString(
+              <ParkingPopup latitude={latitude} longitude={longitude} onClick={this.onClickPopup} />
+            ))
           })
       
+          var locations =  [ [52.525244, 13.332137], [52.535244, 13.332137]]
+          var currentMap = this.map
+          
+          this.drawRoute(locations[0], locations[1], currentMap)
+      
+
+  
        }
+
+    
 }
 
 export default MapView;
