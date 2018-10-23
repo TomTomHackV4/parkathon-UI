@@ -5,12 +5,42 @@ class MapView extends Component {
     constructor(props) {
         super(props)
         this.onLoadMap = this.onLoadMap.bind(this)
+        this.updateMap = this.updateMap.bind(this)
 
         this.map = null
+        this.navigate = true
+        this.routeCordinates = null
+        this.destination = [52.535244, 13.332137]
+        this.routeOnMapView = null
     }
 
     componentDidMount() {
-        this.createMap()
+      this.createMap()
+
+      if(this.navigate){
+        setInterval(() => this.setState({ time:
+          this.updateMap()
+        }), 500)
+      }
+    }
+
+    updateMap(){
+      if(this.routeOnMapView === null){
+        return
+      }
+      if(this.routeCordinates === null || 
+        this.routeCordinates.length === 1){
+        return
+      }
+      this.routeCordinates.shift()
+      var startPoint = [this.routeCordinates[0][1], this.routeCordinates[0][0]]
+
+      console.log(startPoint)
+      
+      this.routeOnMapView.draw([startPoint, this.destination])
+ 
+      this.map.setMaxZoom(15)
+      this.map.setZoom(15)
     }
 
     render() {
@@ -19,25 +49,17 @@ class MapView extends Component {
     }
 
     drawRoute(start, finish){
-      var that = this
-      var routeBackgroundWeight = 12;
-      var routeWeight = 9;
-
-      window.tomtom.routing().locations([start, finish]).go().then(function (routeJson) {
-        var route = [];
-        route[0] = window.tomtom.L.geoJson(routeJson, {
-          style: {
-            color: 'black',
-            weight: routeBackgroundWeight
-          }
-        }).addTo(that.map);
-        route[1] = window.tomtom.L.geoJson(routeJson, {
-          style: {
-            color: 'green',
-            weight: routeWeight
-          }
-        }).addTo(that.map);
+      window.tomtom.routing().locations([start, finish]).go().then((routeJson) => {
+        this.routeCordinates = routeJson.features[0].geometry.coordinates
       });
+
+      var routeOnMapView = window.tomtom.routeOnMap(
+        {
+          generalMarker: {icon: null}
+        }
+      ).addTo(this.map);
+      routeOnMapView.draw([start, finish]);
+      this.routeOnMapView = routeOnMapView
     }
 
     render() {
@@ -51,10 +73,16 @@ class MapView extends Component {
             key: 'FGnnvNpBGVusBxLf12fGiSd88coPe37Y',
             center: [52.525244, 13.332137],
             basePath: '/sdk',
-            zoom: 15
+            zoom: 15,
+            zoomAnimation: false,
+            fadeAnimation: false,
+            markerZoomAnimation: false
         })
 
+        this.map.setMinZoom(15)
+
         this.map.locate({setView: true, maxZoom: 15})
+        
         this.map.on('locationfound', (evt) => {
             window.tomtom.L.marker(evt.latlng, {
                 title:'Your position',
@@ -63,7 +91,9 @@ class MapView extends Component {
                     iconSize:[32,32]
                 })
             }).addTo(this.map)
+            this.drawRoute(evt.latlng, this.destination)
         }, this)
+
         this.map.on('locationerror', () => {
             window.tomtom.messageBox({closeAfter:5000})
                 .setContent('Could not locate you')
@@ -82,12 +112,6 @@ class MapView extends Component {
             console.log('Latitude, longitude', [latitude, longitude])
             window.tomtom.L.marker([latitude, longitude], { icon: myIcon }).addTo(this.map)
         })
-
-        // const locations =  [ [52.525244, 13.332137], [52.535244, 13.332137]]
-        // const currentMap = this.map
-
-        // this.drawRoute(locations[0], locations[1], currentMap)
-
     }
 
     createMap() {
