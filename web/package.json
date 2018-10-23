@@ -20,5 +20,9 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.1"
+  }
 }

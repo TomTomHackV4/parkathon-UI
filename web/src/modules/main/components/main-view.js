@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import './main-view.css';
-import { MapView } from '../../map';
+import { connect } from 'react-redux'
+import { getMapPoints } from '../../../common'
+import { MapView } from '../../map'
 
 class MainView extends Component {
     render() {
+        console.log('Props: ', this.props)
         return (
             <div className="App">
                 <div className="app-header">
@@ -17,4 +20,22 @@ class MainView extends Component {
     }
 }
 
-export default MainView;
+const mapDispatchToProps = (dispatch) => {
+    console.log('MapDispatchToProps', dispatch)
+    return {
+        chargeMapPoints: () => {
+            console.log('Map points changed')
+            dispatch(getMapPoints())
+        }
+    }
+}
+
+const mapStateToProps = (state) => {
+    console.log('mapStateToProps', state)
+    return {
+        mapPoints: state.mapPoints
+    }
+}
+
+const connectedMain = connect(mapStateToProps, mapDispatchToProps)(MainView)
+export default connectedMain
