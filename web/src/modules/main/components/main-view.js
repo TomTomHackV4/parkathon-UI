@@ -5,6 +5,10 @@ import { getMapPoints, getSpotsActions } from '../../../common'
 import { MapView } from '../../map'
 
 class MainView extends Component {
+    componentWillMount () {
+        this.props.chargeMapPoints()
+    }
+
     render() {
         console.log('MapPoints', this.props.mapPoints)
         return (
@@ -14,7 +18,7 @@ class MainView extends Component {
                     <button onClick={this.props.chargeMapPoints}>Click here!</button>
                 </div>
                 <div className="map">
-                    <MapView freeParkingSpots = {[{"latitude":52.519735,"longitude":13.337614},{"latitude":52.518735,"longitude":13.338614},{"latitude":52.517735,"longitude":13.339614}]}/>
+                    <MapView freeParkingSpots={this.props.mapPoints}/>
                 </div>
             </div>
         )
@@ -23,9 +27,7 @@ class MainView extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        chargeMapPoints: () => {
-            getSpotsActions.fetch().then((data) => dispatch(getMapPoints(data)))
-        }
+        chargeMapPoints: () => getSpotsActions.fetch().then((data) => dispatch(getMapPoints(data)))
     }
 }
 
