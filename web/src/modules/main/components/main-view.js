@@ -38,7 +38,7 @@ class MainView extends Component {
                 <div className="map">
                     <MapView destinationMarker = {this.props.appStatus.destinationMarker}
                         freeParkingSpots={this.props.mapPoints}
-                        onMarkerClicked={(destinationMarker) => onClickButtonState(BUTTON_IDS.MARKER_SELECTED, destinationMarker)} />
+                        onMarkerClicked={(destinationMarker) => this.props.onClickButtonState(BUTTON_IDS.MARKER_SELECTED, destinationMarker)} />
                 </div>
             </div>
         )
