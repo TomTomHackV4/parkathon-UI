@@ -6,10 +6,10 @@ class MainView extends Component {
     render() {
         return (
             <div className="App">
-                <div>
+                <div className="app-header">
                     <h1>Parkathon App</h1>
                 </div>
-                <div>
+                <div className="map">
                     <MapView />
                 </div>
             </div>
