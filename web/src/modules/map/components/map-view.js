@@ -9,7 +9,6 @@ class MapView extends Component {
       super(props)
       this.onLoadMap = this.onLoadMap.bind(this)
       this.onClickPopup = this.onClickPopup.bind(this)
-
       this.map = null;
     }
 
@@ -25,7 +24,8 @@ class MapView extends Component {
       console.log("Clicked")
     }
 
-    drawRoute(start, finish, currentMap){
+    drawRoute(start, finish){
+      var that = this
       var routeBackgroundWeight = 12;
       var routeWeight = 9;
           
@@ -36,51 +36,47 @@ class MapView extends Component {
             color: 'black',
             weight: routeBackgroundWeight
           }
-        }).addTo(currentMap);
+        }).addTo(that.map);
         route[1] = window.tomtom.L.geoJson(routeJson, {
           style: {
             color: 'green',
             weight: routeWeight
           }
-        }).addTo(currentMap);
+        }).addTo(that.map);
       });
     }   
 
-       render() {
-         return <div id = 'map'></div>
-       }
+    render() {
+      return <div id = 'map'></div>
+    }
 
-       onLoadMap () {
-          this.map = window.tomtom.L.map('map', {
-             source: 'vector',
-             key: 'FGnnvNpBGVusBxLf12fGiSd88coPe37Y',
-             center: [52.525244, 13.332137],
-             basePath: '/sdk',
-             zoom: 15
-           });
-         
-          var myIcon = window.tomtom.L.icon({
-            iconUrl: 'icon.png',
-            iconSize: [50, 50],
-            iconAnchor: [22, 94],
-            popupAnchor: [-3, -76]
-          });
-           
-          this.props.freeParkingSpots.forEach(({latitude, longitude}) => {
-            var marker = window.tomtom.L.marker([latitude, longitude], {icon: myIcon}).addTo(this.map);
-            marker.bindPopup(ReactDOMServer.renderToString(
-              <ParkingPopup latitude={latitude} longitude={longitude} onClick={this.onClickPopup} />
-            ))
-          })
+    onLoadMap () {
+      this.map = window.tomtom.L.map('map', {
+          source: 'vector',
+          key: 'FGnnvNpBGVusBxLf12fGiSd88coPe37Y',
+          center: [52.525244, 13.332137],
+          basePath: '/sdk',
+          zoom: 15
+        });
       
-          var locations =  [ [52.525244, 13.332137], [52.535244, 13.332137]]
-          var currentMap = this.map
-          
-          this.drawRoute(locations[0], locations[1], currentMap)
-      
-
+      var myIcon = window.tomtom.L.icon({
+        iconUrl: 'icon.png',
+        iconSize: [50, 50],
+        iconAnchor: [22, 94],
+        popupAnchor: [-3, -76]
+      });
+        
+      this.props.freeParkingSpots.forEach(({latitude, longitude}) => {
+        var marker = window.tomtom.L.marker([latitude, longitude], {icon: myIcon}).addTo(this.map);
+        marker.bindPopup(ReactDOMServer.renderToString(
+          <ParkingPopup latitude={latitude} longitude={longitude} onClick={this.onClickPopup} />
+        ))
+      })
   
-       }
+      var locations =  [ [52.525244, 13.332137], [52.535244, 13.332137]]
+      
+      this.drawRoute(locations[0], locations[1])
+    }
 
     
 }
