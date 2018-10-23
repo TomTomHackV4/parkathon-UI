@@ -13,7 +13,7 @@ class MainView extends Component {
                     <h1>Parkathon App</h1>
                 </div>
                 <div className="map">
-                    <MapView />
+                    <MapView freeParkingSpots = {[{"latitude":52.519735,"longitude":13.337614},{"latitude":52.518735,"longitude":13.338614},{"latitude":52.517735,"longitude":13.339614}]}/>
                 </div>
             </div>
         )
