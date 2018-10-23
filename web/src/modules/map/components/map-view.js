@@ -78,6 +78,8 @@ class MapView extends Component {
                 markerZoomAnimation: false
             })
 
+        // this.map.setMinZoom(15)
+
         this.map.locate({setView: true, maxZoom: 15})
 
         this.map.on('locationfound', (evt) => {
@@ -116,7 +118,7 @@ class MapView extends Component {
             popupAnchor: [-3, -76]
         })
 
-        this.props.freeParkingSpots.forEach((object) => {
+        this.props.freeParkingSpots && this.props.freeParkingSpots.forEach((object) => {
             const { latitude, longitude } = object
             console.log('Latitude, longitude', [latitude, longitude])
             window.tomtom.L.marker([latitude, longitude], { icon: myIcon })
@@ -129,7 +131,7 @@ class MapView extends Component {
       if(this.routeOnMapView === null){
         return
       }
-      if(this.routeCordinates === null || 
+      if(this.routeCordinates === null ||
         this.routeCordinates.length === 1){
         return
       }
@@ -137,9 +139,9 @@ class MapView extends Component {
       var startPoint = [this.routeCordinates[0][1], this.routeCordinates[0][0]]
 
       console.log(startPoint)
-      
+
       this.routeOnMapView.draw([startPoint, this.destination])
- 
+
       this.map.setMaxZoom(15)
       this.map.setZoom(15)
     }
