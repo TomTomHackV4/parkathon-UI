@@ -1,18 +1,7 @@
-export const GET_MAP_POINTS_ACTION_NAME = 'MAP_POINTS_ACTION'
+import createCrudActions from '../http-helper'
 
-export const getMapPoints = () => ({
-    data: generateRandomPoints(),
-    type: GET_MAP_POINTS_ACTION_NAME
-})
+export const GET_PARKING_SPOTS_RESOURCE_NAME = 'MAP_POINTS_ACTION'
+const GET_PARKING_POINTS_RESOURCE_PATH = '/parking-spots'
 
-function generateRandomPoints () {
-    const arrayOfPositions = []
-    for (let i = 0; i < 800; i++) {
-        arrayOfPositions.push({
-            lat: i * 4321,
-            long: i * 1234
-        })
-    }
-
-    return arrayOfPositions
-}
+export const getSpotsActions = createCrudActions(GET_PARKING_POINTS_RESOURCE_PATH)
+export const getMapPoints = (data) => ({ data, type: GET_PARKING_SPOTS_RESOURCE_NAME })
