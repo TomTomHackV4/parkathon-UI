@@ -14,8 +14,7 @@ export const USER_STATUS_NAVIGATE = 'navigate'
 const DEFAULT_STATE = {
     userState: USER_STATUS_NOT_PARKED,
     previousState: null,
-    destinationMarker: null,
-    route: null
+    destinationMarker: null
 }
 
 const appStatusReducer = (state = DEFAULT_STATE, action) => {
@@ -28,7 +27,6 @@ const appStatusReducer = (state = DEFAULT_STATE, action) => {
             return {
                 ...state,
                 destinationMarker: action.destinationMarker,
-                route: action.route,
                 userState: USER_STATUS_MARKER_SELECTED
             }
         case ACTION_NAVIGATE:

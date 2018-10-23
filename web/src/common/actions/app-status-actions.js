@@ -12,8 +12,8 @@ export const actionNotParked = () => ({
     type: ACTION_NOT_PARKED
 })
 
-export const actionSelectDestination = (destinationMarker,route) => ({
-    destinationMarker, route, type: ACTION_SELECT_DESTINATION
+export const actionSelectDestination = (destinationMarker) => ({
+    destinationMarker, type: ACTION_SELECT_DESTINATION
 })
 
 export const actionNavigate = () => ({

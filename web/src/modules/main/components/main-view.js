@@ -6,6 +6,7 @@ import {
     getSpotsActions,
     actionParked,
     actionNotParked,
+    actionSelectDestination,
     actionNavigate,
     actionCancel
 } from '../../../common'
@@ -26,10 +27,6 @@ const BUTTON_IDS = {
 }
 
 class MainView extends Component {
-    constructor (props) {
-        super(props)
-    }
-
     componentWillMount () {
         this.props.chargeMapPoints()
     }
@@ -39,7 +36,9 @@ class MainView extends Component {
             <div className="App">
                 {this.renderButtons()}
                 <div className="map">
-                    <MapView freeParkingSpots={this.props.mapPoints}/>
+                    <MapView destinationMarker = {this.props.appStatus.destinationMarker}
+                        freeParkingSpots={this.props.mapPoints}
+                        onMarkerClicked={(destinationMarker) => this.props.onClickButtonState(BUTTON_IDS.MARKER_SELECTED, destinationMarker)} />
                 </div>
             </div>
         )
@@ -99,7 +98,7 @@ const mapDispatchToProps = (dispatch) => {
             radiusMeters: 5000,
             maxAgeSeconds: 1800
         }).then((data) => dispatch(getMapPoints(data))),
-        onClickButtonState: (clickedButtonId) => {
+        onClickButtonState: (clickedButtonId, destinationMarker) => {
             switch (clickedButtonId) {
                 case BUTTON_IDS.I_AM_PARKED:
                     dispatch(actionParked())
@@ -107,6 +106,10 @@ const mapDispatchToProps = (dispatch) => {
                     break
                 case BUTTON_IDS.I_AM_NOT_PARKED:
                     dispatch(actionNotParked())
+                    // TODO Notify Backend here
+                    break
+                case BUTTON_IDS.MARKER_SELECTED:
+                    dispatch(actionSelectDestination(destinationMarker))
                     // TODO Notify Backend here
                     break
                 case BUTTON_IDS.NAVIGATE:
