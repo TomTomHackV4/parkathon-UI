@@ -18,25 +18,30 @@ class MapView extends Component {
         return (<div id='map'></div>)
     }
 
-    drawRoute(start, finish, currentMap) {
-        const routeBackgroundWeight = 12
-        const routeWeight = 9
+    drawRoute(start, finish){
+      var that = this
+      var routeBackgroundWeight = 12;
+      var routeWeight = 9;
 
-        window.tomtom.routing().locations([start, finish]).go().then(function (routeJson) {
-            const route = []
-            route[0] = window.tomtom.L.geoJson(routeJson, {
-                style: {
-                    color: 'black',
-                    weight: routeBackgroundWeight
-                }
-            }).addTo(currentMap)
-            route[1] = window.tomtom.L.geoJson(routeJson, {
-                style: {
-                    color: 'green',
-                    weight: routeWeight
-                }
-            }).addTo(currentMap)
-        })
+      window.tomtom.routing().locations([start, finish]).go().then(function (routeJson) {
+        var route = [];
+        route[0] = window.tomtom.L.geoJson(routeJson, {
+          style: {
+            color: 'black',
+            weight: routeBackgroundWeight
+          }
+        }).addTo(that.map);
+        route[1] = window.tomtom.L.geoJson(routeJson, {
+          style: {
+            color: 'green',
+            weight: routeWeight
+          }
+        }).addTo(that.map);
+      });
+    }
+
+    render() {
+      return <div id = 'map'></div>
     }
 
     onLoadMap() {
