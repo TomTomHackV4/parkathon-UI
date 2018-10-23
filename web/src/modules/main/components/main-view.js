@@ -94,7 +94,11 @@ class MainView extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        chargeMapPoints: () => getSpotsActions.fetch().then((data) => dispatch(getMapPoints(data))),
+        chargeMapPoints: () => getSpotsActions.fetch({
+            position: '52.535244:13.332137',
+            radiusMeters: 5000,
+            maxAgeSeconds: 1800
+        }).then((data) => dispatch(getMapPoints(data))),
         onClickButtonState: (clickedButtonId) => {
             switch (clickedButtonId) {
                 case BUTTON_IDS.I_AM_PARKED:

@@ -12,10 +12,15 @@ class MapView extends Component {
         this.routeCordinates = null
         this.destination = [52.535244, 13.332137]
         this.routeOnMapView = null
+        this.userPosition = {
+            lat: 0,
+            lng: 0
+        }
     }
 
     componentDidMount() {
-      this.createMap()
+      this.getUserPositionIfPossible()
+          .then((userCoordinates) => this.createMap(userCoordinates))
 
       if(this.navigate){
         setInterval(() => this.setState({ time:
@@ -66,11 +71,12 @@ class MapView extends Component {
     }
 
     onLoadMap() {
+        console.log(this.userPosition)
         // Define TT Map
         this.map = window.tomtom.L.map('map', {
             source: 'vector',
             key: 'sgqShnAhoEUi2DZq1UGH6GxzNU1IAqHG',
-            center: [52.525244, 13.332137],
+            center: [this.userPosition.lat, this.userPosition.lng],
             basePath: '/sdk',
             zoom: 15,
             zoomAnimation: false,
@@ -78,40 +84,46 @@ class MapView extends Component {
             markerZoomAnimation: false
         })
 
-        // this.map.setMinZoom(15)
+        window.tomtom.L.marker([this.userPosition.lat, this.userPosition.lng], {
+            title:'Your position',
+            icon: window.tomtom.L.icon({
+                iconUrl:'icons/ic_user_location.svg'
+            })
 
-        this.map.locate({setView: true, maxZoom: 15})
-
-        this.map.on('locationfound', (evt) => {
-            window.tomtom.L.marker(evt.latlng, {
-                title:'Your position',
-                //icon: window.tomtom.L.icon({
-                //    iconUrl:'icon.png',
-                //   iconSize:[32,32]
-                //})
-                icon:new window.tomtom.L.Icon.Default()
-
-            }).addTo(this.map)
-            this.drawRoute(evt.latlng, this.destination)
-        }, this)
-
-        this.map.on('locationerror', () => {
-            window.tomtom.messageBox({closeAfter:5000})
-                .setContent('Could not locate you')
-                .openOn(this.map)
-        }, this)
+        }).addTo(this.map)
 
         const myIcon = window.tomtom.L.icon({
-            iconUrl: 'icon.png',
-            iconSize: [50, 50],
-            iconAnchor: [22, 94],
-            popupAnchor: [-3, -76]
+            iconUrl: 'icons/ic_parking_spot.svg',
+            iconSize: [32, 32]
         })
 
-        this.props.freeParkingSpots && this.props.freeParkingSpots.forEach((object) => {
-            const { latitude, longitude } = object
+        this.props.freeParkingSpots && Array.isArray(this.props.freeParkingSpots) && this.props.freeParkingSpots.forEach(({location}) => {
+            const { latitude, longitude } = location
             window.tomtom.L.marker([latitude, longitude], { icon: myIcon }).addTo(this.map)
         })
+    }
+
+    getUserPositionIfPossible () {
+        if (navigator.geolocation) {
+            const userCoords = {
+                latitude: 0,
+                longitude: 0
+            }
+
+            return new Promise((resolve) => {
+                navigator.geolocation.getCurrentPosition(({ coords }) => {
+                    userCoords.latitude =coords.latitude
+                    userCoords.longitude = coords.longitude
+
+                    this.userPosition.lat = coords.latitude
+                    this.userPosition.lng = coords.longitude
+
+                    resolve()
+                })
+            })
+        }
+
+        return Promise.resolve(null)
     }
 
     createMap() {

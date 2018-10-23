@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Vector/ic_parking_spot</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M12,4.50741542e-15 C5.38338026,4.50741542e-15 0,5.54777934 0,12.3671743 C0,14.5558483 0.626791173,16.8471518 1.86271748,19.1776899 C2.83879222,21.017382 4.19581629,22.8878423 5.89636643,24.7366202 C8.77910695,27.8700232 11.6159801,29.8350596 11.7355425,29.9168328 C11.8967503,30.0277224 12.1032497,30.0277224 12.2644575,29.9168328 C12.383828,29.8348531 15.2208931,27.8700232 18.1034417,24.7366202 C19.8041837,22.8878423 21.1612078,21.017382 22.1370906,19.1776899 C23.3732088,16.8471518 24,14.5558483 24,12.3671743 C24,5.54777934 18.6168117,0 12,4.50741542e-15 Z" id="path-1"></path>
+        <filter x="-8.3%" y="-10.0%" width="116.7%" height="113.3%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.178698622   0 0 0 0 0.309133945   0 0 0 0 0.432583971  0 0 0 0.3 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icons/charging_station/ic_charging_station">
+            <polygon id="Rectangle-4" points="0 0 30 0 30 30 0 30"></polygon>
+            <g id="icons/final_destination" stroke-width="1" fill-rule="evenodd" transform="translate(3.000000, 0.000000)">
+                <g id="Path" fill-rule="nonzero">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#7CA5FF" xlink:href="#path-1"></use>
+                </g>
+                <circle id="Oval" fill="#FFFFFF" cx="12" cy="12" r="10"></circle>
+                <g id="parking-square-sign" transform="translate(8.000000, 6.000000)" fill="#6D7093" fill-rule="nonzero">
+                    <path d="M8.5,3.98457901 C8.5,5.90593924 6.89722941,7.46915801 4.92731509,7.46908021 L2.67566157,7.46908021 L2.67566157,11.0777769 C2.67566157,11.3109189 2.48179969,11.5 2.24276275,11.5 L0.932898821,11.5 C0.693861882,11.5 0.5,11.3109189 0.5,11.0777769 L0.5,0.922223113 C0.5,0.689081059 0.693861882,0.5 0.932898821,0.5 L4.92731509,0.5 C6.89725599,0.5 8.5,2.06321877 8.5,3.98457901 Z M6.32433843,3.98457901 C6.32433843,3.23328587 5.69768408,2.62208543 4.9272885,2.62208543 L2.67563498,2.62208543 L2.67563498,5.34717631 L4.9272885,5.34717631 C5.69768408,5.34717631 6.32433843,4.73587214 6.32433843,3.98457901 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
