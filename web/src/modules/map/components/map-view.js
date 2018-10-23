@@ -93,9 +93,7 @@ class MapView extends Component {
         // Prints route of user on map
         if (this.destination)
         {
-            console.log('DRAW EVENT', evt.latlng, this.destination)
-            this.drawRoute([evt.latlng.lat, evt.latlng.lng], [52.5177350, 13.3396140])
-            // this.drawRoute([evt.latlng.lat, evt.latlng.lng], [this.destination.lat, this.destination.lng])
+            this.drawRoute([this.userPosition.lat, this.userPosition.lng], [52.5177350, 13.3396140])
         }
 
         const myIcon = window.tomtom.L.icon({
