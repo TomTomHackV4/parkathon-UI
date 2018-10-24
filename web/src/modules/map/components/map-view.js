@@ -28,13 +28,17 @@ class MapView extends Component {
     }
 
     componentWillUpdate (nextProps) {
+        if (this.routeOnMapView) {
+            this.routeOnMapView.clear()
+        }
+        if (this.userPositionMarker) {
+            this.userPositionMarker.addTo(this.map)
+        }
+
         if (nextProps.destinationMarker) {
+
             if (this.userPositionMarker) {
                 this.userPositionMarker.remove()
-            }
-
-            if (this.routeOnMapView) {
-                this.routeOnMapView.clear()
             }
 
             this.drawRoute(nextProps.destinationMarker, this.userPosition)
@@ -42,7 +46,6 @@ class MapView extends Component {
     }
 
     render() {
-        console.log('Spots array length', this.props.freeParkingSpots.length)
         return <div id='map'></div>
     }
 
