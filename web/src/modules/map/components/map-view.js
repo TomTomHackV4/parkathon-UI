@@ -79,9 +79,9 @@ class MapView extends Component {
     onLoadMap () {
         const mapConfig = {
             source: 'vector',
-            // key: 'FGnnvNpBGVusBxLf12fGiSd88coPe37Y', // PARKATHON
+            key: 'FGnnvNpBGVusBxLf12fGiSd88coPe37Y', // PARKATHON
             // key: 'AwXNJrFOUApkdmvv1GTZLI4KrI7KozIz', // PARKATHON2
-            key: 'sgqShnAhoEUi2DZq1UGH6GxzNU1IAqHG', // PARKATHONV4
+            // key: 'sgqShnAhoEUi2DZq1UGH6GxzNU1IAqHG', // PARKATHONV4
             center: [this.userPosition.lat, this.userPosition.lng],
             basePath: '/sdk',
             zoom: 15,
@@ -171,7 +171,7 @@ class MapView extends Component {
             })
 
             this.routeOnMapView.clear()
-            this.routeOnMapView.drawRoute([startPoint, this.props.destinationMarker])
+            this.routeOnMapView.draw([this.userPosition, this.props.destinationMarker])
             //this.drawRoute(this.userPosition, this.props.destinationMarker)
             this.map.setMaxZoom(15)
             this.map.setZoom(15)

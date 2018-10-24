@@ -22,9 +22,18 @@ const DEFAULT_STATE = {
 const appStatusReducer = (state = DEFAULT_STATE, action) => {
     switch (action.type) {
         case ACTION_PARKED:
-            return { ...DEFAULT_STATE, userState: USER_STATUS_PARKED, previousState: USER_STATUS_PARKED, destinationMarker: state.destinationMarker }
+            return {
+                 ...DEFAULT_STATE, 
+                 userState: USER_STATUS_PARKED, 
+                 previousState: USER_STATUS_PARKED, 
+                 destinationMarker: DEFAULT_STATE.destinationMarker
+            }
         case ACTION_NOT_PARKED:
-            return { ...DEFAULT_STATE, userState: USER_STATUS_NOT_PARKED, previousState: USER_STATUS_NOT_PARKED }
+            return { 
+                ...DEFAULT_STATE, 
+                userState: USER_STATUS_NOT_PARKED, 
+                previousState: USER_STATUS_NOT_PARKED 
+            }
         case ACTION_SELECT_DESTINATION:
             return {
                 ...state,
