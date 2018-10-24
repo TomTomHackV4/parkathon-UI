@@ -11,16 +11,18 @@ export const USER_STATUS_PARKED = 'parked'
 export const USER_STATUS_MARKER_SELECTED = 'marker_selected'
 export const USER_STATUS_NAVIGATE = 'navigate'
 
+const DEFAULT_USER_STATE = USER_STATUS_PARKED
+
 const DEFAULT_STATE = {
-    userState: USER_STATUS_NOT_PARKED,
-    previousState: USER_STATUS_NOT_PARKED,
+    userState: DEFAULT_USER_STATE,
+    previousState: DEFAULT_USER_STATE,
     destinationMarker: null
 }
 
 const appStatusReducer = (state = DEFAULT_STATE, action) => {
     switch (action.type) {
         case ACTION_PARKED:
-            return { ...DEFAULT_STATE, userState: USER_STATUS_PARKED, previousState: USER_STATUS_PARKED }
+            return { ...DEFAULT_STATE, userState: USER_STATUS_PARKED, previousState: USER_STATUS_PARKED, destinationMarker: state.destinationMarker }
         case ACTION_NOT_PARKED:
             return { ...DEFAULT_STATE, userState: USER_STATUS_NOT_PARKED, previousState: USER_STATUS_NOT_PARKED }
         case ACTION_SELECT_DESTINATION:
@@ -39,8 +41,8 @@ const appStatusReducer = (state = DEFAULT_STATE, action) => {
             return {
                 ...state,
                 userState: state.previousState,
-                destinationMarker: null,
-                previousState: state.previousState
+                previousState: state.previousState,
+                destinationMarker: DEFAULT_STATE.destinationMarker
             }
         default:
             return state

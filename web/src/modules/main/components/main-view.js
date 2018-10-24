@@ -17,6 +17,7 @@ import {
     USER_STATUS_NOT_PARKED,
     USER_STATUS_PARKED
 } from '../../../common/reducers/app-status-reducer'
+import { updateLocationActionsStart, updateLocationActionsStop } from '../../../common/actions'
 
 const BUTTON_IDS = {
     I_AM_PARKED: 'I_AM_PARKED',
@@ -75,7 +76,7 @@ class MainView extends Component {
             <div className='button-wrapper'>
                 <div className='button-container'>
                     <button disabled={disableParkedButton}
-                        onClick={() => onClickButtonState(BUTTON_IDS.I_AM_PARKED)}>
+                        onClick={() => onClickButtonState(BUTTON_IDS.I_AM_PARKED, this.props.appStatus.destinationMarker)}>
                         I am parked
                     </button>
                     <button disabled={disableNotParkedButton}
@@ -98,19 +99,24 @@ class MainView extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        chargeMapPoints: () => getSpotsActions.fetch({
-            position: '52.535244:13.332137',
-            radiusMeters: 5000,
-            maxAgeSeconds: 1800
-        }).then((data) => dispatch(getMapPoints(data))),
+        chargeMapPoints: () => fetchSpots(dispatch),
         onClickButtonState: (clickedButtonId, destinationMarker) => {
+            const position = destinationMarker ? destinationMarker : window.userPosition
             switch (clickedButtonId) {
                 case BUTTON_IDS.I_AM_PARKED:
                     dispatch(actionParked())
-                    // TODO Notify Backend here
+                    updateLocationActionsStart.post({
+                        latitude: position.latitude ? position.latitude : position.lat,
+                        longitude: position.longitude ? position.longitude : position.lng
+                    })
                     break
                 case BUTTON_IDS.I_AM_NOT_PARKED:
                     dispatch(actionNotParked())
+                    updateLocationActionsStop.post({
+                        latitude: window.userPosition.lat,
+                        longitude: window.userPosition.lng
+                    }).then(() => fetchSpots(dispatch))
+                    break
                     // TODO Notify Backend here
                     break
                 case BUTTON_IDS.MARKER_SELECTED:
@@ -130,6 +136,14 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
+const fetchSpots = (dispatch) => {
+    getSpotsActions.fetch({
+        position: '52.535244:13.332137',
+        radiusMeters: 5000,
+        maxAgeSeconds: 6000
+    }).then((data) => dispatch(getMapPoints(data)))
+}
+
 const mapStateToProps = (state) => {
     return {
         mapPoints: state.mapPoints,
@@ -139,3 +153,27 @@ const mapStateToProps = (state) => {
 
 const connectedMain = connect(mapStateToProps, mapDispatchToProps)(MainView)
 export default connectedMain
+
+
+function getUserPositionIfPossible () {
+    if (navigator.geolocation) {
+        const userCoords = {
+            latitude: 0,
+            longitude: 0
+        }
+
+        return new Promise((resolve) => {
+            navigator.geolocation.getCurrentPosition(({ coords }) => {
+                userCoords.latitude = coords.latitude
+                userCoords.longitude = coords.longitude
+
+                this.userPosition.lat = coords.latitude
+                this.userPosition.lng = coords.longitude
+
+                resolve()
+            })
+        })
+    }
+
+    return Promise.resolve(null)
+}
