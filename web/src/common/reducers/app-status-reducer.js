@@ -39,6 +39,7 @@ const appStatusReducer = (state = DEFAULT_STATE, action) => {
             return {
                 ...state,
                 userState: state.previousState,
+                destinationMarker: null,
                 previousState: state.previousState
             }
         default:

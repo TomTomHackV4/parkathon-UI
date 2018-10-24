@@ -28,14 +28,17 @@ class MapView extends Component {
     }
 
     componentWillUpdate (nextProps) {
+        if (this.routeOnMapView) {
+            this.routeOnMapView.clear()
+        }
+        if (this.userPositionMarker) {
+            this.userPositionMarker.addTo(this.map)
+        }
         console.log('nextProps', nextProps)
         if (nextProps.destinationMarker) {
+            
             if (this.userPositionMarker) {
                 this.userPositionMarker.remove()
-            }
-
-            if (this.routeOnMapView) {
-                this.routeOnMapView.clear()
             }
 
             this.drawRoute(nextProps.destinationMarker, this.userPosition)
