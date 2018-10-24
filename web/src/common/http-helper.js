@@ -1,6 +1,6 @@
 import http from 'http'
 
-const server = '10.19.9.204'
+const server = '10.19.4.17'
 const DEFAULT_REQUEST_OPTIONS = {
     hostname: server,
     port: 8080

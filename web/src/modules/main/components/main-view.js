@@ -38,6 +38,7 @@ class MainView extends Component {
                 <div className="map">
                     <MapView destinationMarker = {this.props.appStatus.destinationMarker}
                         freeParkingSpots={this.props.mapPoints}
+                        navigate={this.props.appStatus.userState === USER_STATUS_NAVIGATE}
                         onMarkerClicked={(destinationMarker) => {
                             this.props.onClickButtonState(BUTTON_IDS.MARKER_SELECTED, destinationMarker)
                         }} />

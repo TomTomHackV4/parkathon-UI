@@ -11,7 +11,6 @@ class MapView extends Component {
         this.fetchAndPrintMap = this.fetchAndPrintMap.bind(this)
 
         this.map = null
-        this.navigate = false
         this.routeCordinates = null
         this.parseDestination()
         this.routeOnMapView = null
@@ -41,7 +40,13 @@ class MapView extends Component {
                 this.userPositionMarker.remove()
             }
 
-            this.drawRoute(nextProps.destinationMarker, this.userPosition)
+            this.drawRoute(this.userPosition, nextProps.destinationMarker)
+        }
+
+        if (nextProps.destinationMarker) {
+            setTimeout(() => this.updateMap(), 2000)
+            //setInterval(() => 
+            //        this.updateMap(), 500)
         }
     }
 
@@ -148,25 +153,43 @@ class MapView extends Component {
     }
 
     updateMap () {
-        if (this.routeOnMapView === null) {
-            return
-        }
-        if (this.routeCordinates === null ||
-            this.routeCordinates.length === 1) {
-            return
-        }
-        this.routeCordinates.shift()
-        var startPoint = [this.routeCordinates[0][1], this.routeCordinates[0][0]]
+        if(this.props.destinationMarker && this.props.navigate){
 
-        this.routeOnMapView.draw([startPoint, this.destination])
+            if (this.routeOnMapView === null) {
+                return
+            }
+            if (this.routeCordinates === null ||
+                this.routeCordinates.length === 1) {
+                return
+            }
+            this.routeCordinates.shift()
+            console.log(this.routeCordinates.length)
+            var startPoint = [this.routeCordinates[0][1], this.routeCordinates[0][0]]
+            this.userPosition = {lat: startPoint[0], lng: startPoint[1]}
+            
+            this.userPositionMarker = window.tomtom.L.marker([this.userPosition.lat, this.userPosition.lng], {
+                title: 'Your position',
+                icon: window.tomtom.L.icon({
+                    iconUrl: 'icons/ic_user_location.svg'
+                })
+            })
 
-        this.map.setMaxZoom(15)
-        this.map.setZoom(15)
+            this.routeOnMapView.clear()
+            this.routeOnMapView.drawRoute([startPoint, this.props.destinationMarker])
+            //this.drawRoute(this.userPosition, this.props.destinationMarker)
+            this.map.setMaxZoom(15)
+            this.map.setZoom(15)
+            setTimeout(() => this.updateMap(), 500)
+        }
     }
 
     drawRoute (start, finish) {
+        window.tomtom.routing().locations([start, finish]).go().then((routeJson) => {
+            this.routeCordinates = routeJson.features[0].geometry.coordinates
+        });
+
         this.routeOnMapView = window.tomtom.routeOnMap().addTo(this.map)
-        this.routeOnMapView.draw([finish, start])
+        this.routeOnMapView.draw([start, finish])
     }
 }
 
