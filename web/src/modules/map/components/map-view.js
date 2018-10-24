@@ -4,7 +4,6 @@ import './map-view.css'
 class MapView extends Component {
     constructor(props) {
         super(props)
-        console.log('MapView Constructor', this.props)
         this.onLoadMap = this.onLoadMap.bind(this)
         this.updateMap = this.updateMap.bind(this)
         this.parseDestination = this.parseDestination.bind(this)
@@ -23,12 +22,12 @@ class MapView extends Component {
     }
 
     componentDidMount () {
-        console.log('MapView componentDidMount', this.props)
-        this.getUserPositionIfPossible().then(this.fetchAndPrintMap)
+        this.getUserPositionIfPossible().then(() => {
+            this.fetchAndPrintMap()
+        })
     }
 
     componentWillUpdate (nextProps) {
-        console.log('nextProps', nextProps)
         if (nextProps.destinationMarker) {
             if (this.userPositionMarker) {
                 this.userPositionMarker.remove()
@@ -43,6 +42,7 @@ class MapView extends Component {
     }
 
     render() {
+        console.log('Spots array length', this.props.freeParkingSpots.length)
         return <div id='map'></div>
     }
 
@@ -98,36 +98,32 @@ class MapView extends Component {
     }
 
     loadMarkers (spotsArray) {
-        const icon = window.tomtom.L.icon({
-            iconUrl: 'icons/ic_parking_spot.svg',
-            iconSize: [32, 32]
-        })
-
-        if (spotsArray && Array.isArray(spotsArray)) {
-            spotsArray.forEach(({ location }) => {
-                const { latitude, longitude } = location
-                window.tomtom.L.marker([latitude, longitude], { icon })
-                    .on('click', () => this.props.onMarkerClicked(location))
-                    .addTo(this.map)
+        if (this.map) {
+            const icon = window.tomtom.L.icon({
+                iconUrl: 'icons/ic_parking_spot.svg',
+                iconSize: [32, 32]
             })
+
+            if (spotsArray && Array.isArray(spotsArray)) {
+                spotsArray.forEach(({ location }) => {
+                    const { latitude, longitude } = location
+                    window.tomtom.L.marker([latitude, longitude], { icon })
+                        .on('click', () => this.props.onMarkerClicked(location))
+                        .addTo(this.map)
+                })
+            }
         }
     }
 
     getUserPositionIfPossible () {
         if (navigator.geolocation) {
-            const userCoords = {
-                latitude: 0,
-                longitude: 0
-            }
-
             return new Promise((resolve) => {
                 navigator.geolocation.getCurrentPosition(({ coords }) => {
-                    userCoords.latitude = coords.latitude
-                    userCoords.longitude = coords.longitude
-
                     this.userPosition.lat = coords.latitude
                     this.userPosition.lng = coords.longitude
 
+                    // Suscribe usr position to main window object to acces from main-view.js
+                    window.userPosition = this.userPosition
                     resolve()
                 })
             })
